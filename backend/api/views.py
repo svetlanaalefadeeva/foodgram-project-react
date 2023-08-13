@@ -7,8 +7,6 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from cookbook.models import Ingredient, Favorite, Recipe, ShoppingCart, Tag
-from users.models import CustomUser
-from users.views import UserViewSet
 
 from .filters import IngredientFilter, RecepeFilter
 from .pagination import CustomPagination
@@ -125,5 +123,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
         for ingredient, data in ingredients_dict.items():
             response.write(
                 f"{ingredient} - {data['amount']} {data['measurement_unit']}\n"
-                )
+        )
         return response

@@ -123,5 +123,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
         for ingredient, data in ingredients_dict.items():
             response.write(
                 f"{ingredient} - {data['amount']} {data['measurement_unit']}\n"
-                )
+            )
         return response

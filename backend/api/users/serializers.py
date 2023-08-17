@@ -73,8 +73,9 @@ class SubscriptionRecipeSerializer(serializers.ModelSerializer):
 
 
 class UserSubscribeSerializer(UserSerializer):
-# остаивла этот вариант наследования, так поля не переопределяю.
-
+    # остаивла этот
+    # вариант наследования,
+    # так поля не переопределяю.
     recipes_count = serializers.SerializerMethodField(read_only=True)
     recipes = serializers.SerializerMethodField(read_only=True)
 

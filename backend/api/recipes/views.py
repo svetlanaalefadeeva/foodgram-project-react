@@ -145,7 +145,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'],
         detail=False,
-        permission_classes=[IsAuthenticated])
+        permission_classes=[IsAuthenticated]
+    )
     def download_shopping_cart(self, request):
         queryset = Recipe.objects.filter(
             shopping_cart__user=request.user
@@ -171,12 +172,11 @@ def create_ingredients_dict(queryset):
         queryset.values_list(
             'recipe_ingredients__ingredient__name',
             'recipe_ingredients__ingredient__measurement_unit'
-        )
-        .annotate(amount=Sum(
-                    'recipe_ingredients__amount'
-                )
-        )
-        .values(
+        ).annotate(
+            amount=Sum(
+                'recipe_ingredients__amount'
+            )
+        ).values(
             'recipe_ingredients__ingredient__name',
             'recipe_ingredients__ingredient__measurement_unit',
             'amount'

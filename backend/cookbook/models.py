@@ -26,7 +26,7 @@ class Recipe(models.Model):
         verbose_name='Описание рецепта'
     )
     ingredients = models.ManyToManyField(
-        Ingredient, 
+        Ingredient,
         through='RecipeIngredient',
         related_name='recipes',
         verbose_name='Ингредиенты'
@@ -82,6 +82,7 @@ class Recipe(models.Model):
             flat=True
         )
 
+
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
@@ -101,7 +102,7 @@ class RecipeIngredient(models.Model):
             MinValueValidator(
                 1,
                 message='Минимальное количество 1!'
-                )
+            )
         ]
     )
 
@@ -111,11 +112,11 @@ class RecipeIngredient(models.Model):
         verbose_name_plural = 'Количество ингридиентов'
         constraints = [
             models.UniqueConstraint(
-            fields=[
-                'recipe',
-                'ingredient'
-                ],
-            name='unique_recepe_s_ingredient'
+                fields=[
+                    'recipe',
+                    'ingredient'
+                    ],
+                name='unique_recepe_s_ingredient'
             )
         ]
 
@@ -169,7 +170,7 @@ class Favorite(models.Model):
         unique_together = (
             'user',
             'recipe'
-            )
+        )
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
 

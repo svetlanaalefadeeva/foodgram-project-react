@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 
 from cookbook.models import Ingredient
 
+
 class Command(BaseCommand):
     help = 'Add ingredients to the database'
 

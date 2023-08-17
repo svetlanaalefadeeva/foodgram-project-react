@@ -22,11 +22,11 @@ class CustomUserAdmin(UserAdmin):
         'is_active'
     )
     search_fields = (
-        'username', 
+        'username',
         'email'
     )
     ordering = (
-    'username',
+        'username',
     )
     filter_horizontal = ()
     list_display = (
@@ -44,6 +44,7 @@ class CustomUserAdmin(UserAdmin):
     )
     ordering = ('username',)
     empty_value_display = '-пусто-'
+
 
 @register(Subscription)
 class SubscriptionAdmin(ModelAdmin):

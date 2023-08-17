@@ -12,7 +12,7 @@ class Ingredient(models.Model):
     measurement_unit = models.CharField(
         max_length=200,
         verbose_name='Единица измерения'
-        )
+    )
 
     class Meta:
         ordering = ['name']
@@ -20,11 +20,8 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ингредиенты'
         constraints = [
             models.UniqueConstraint(
-            fields=
-            ['name',
-             'measurement_unit'
-             ],
-            name='unique_ingredient'
+                fields=['name','measurement_unit'],
+                name='unique_ingredient'
             )
         ]
 

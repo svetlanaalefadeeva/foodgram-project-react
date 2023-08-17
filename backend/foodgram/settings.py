@@ -95,14 +95,15 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-   ],
+    ],
+
 }
 
 DJOSER = {
     'SERIALIZERS': {
         'user': 'api.users.serializers.UserSerializer',
         'current_user': 'api.users.serializers.UserSerializer',
-        'user_create':  'api.users.serializers.UserSerializer',
+        'user_create': 'api.users.serializers.UserSerializer',
     },
 
     "PERMISSIONS": {
@@ -130,4 +131,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

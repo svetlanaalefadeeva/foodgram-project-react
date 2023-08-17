@@ -49,14 +49,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         return Subscription.objects.filter(
-            user=self.context.get(
-                'request').user,
-                author=obj
-            ).exists() if self.context.get(
-                'request'
-            ) and self.context.get(
-                'request'
-            ).user.is_authenticated else False
+            user=self.context.get('request').user,
+            author=obj).exists() if self.context.get(
+            'request') and self.context.get(
+            'request').user.is_authenticated else False
 
 
 class SubscriptionRecipeSerializer(serializers.ModelSerializer):
@@ -67,7 +63,7 @@ class SubscriptionRecipeSerializer(serializers.ModelSerializer):
             'name',
             'image',
             'cooking_time'
-            )
+        )
         read_only_fields = (
             'id',
             'name',
@@ -76,8 +72,9 @@ class SubscriptionRecipeSerializer(serializers.ModelSerializer):
         )
 
 
-class UserSubscribeSerializer(UserSerializer):  # остаивла этот вариант наследования,
-    recipes_count = serializers.SerializerMethodField(read_only=True) # так поля не переопределяю  
+class UserSubscribeSerializer(UserSerializer):
+# остаивла этот вариант наследования, так поля не переопределяю
+    recipes_count = serializers.SerializerMethodField(read_only=True)  
     recipes = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserSerializer.Meta):
@@ -125,7 +122,8 @@ class CreateSubscriptionSerializer(serializers.ModelSerializer):
         author = attrs['author']
         if Subscription.objects.filter(
             user=user,
-            author=author).exists():
+            author=author
+        ).exists():
             raise serializers.ValidationError(
                 'Вы уже подписаны на этого автора'
             )

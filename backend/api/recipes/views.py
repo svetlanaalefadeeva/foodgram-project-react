@@ -58,11 +58,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 data={
                     'recipe': recipe.id,
                     'user': user.id
-                    },
+                },
                 context={
                     'request': request
-                    }
-                )
+                }
+            )
             serializer.is_valid(raise_exception=True)
             favorite, created = Favorite.objects.get_or_create(
                 user=user,
@@ -78,16 +78,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 data={
                     'recipe': recipe.id,
                     'user': user.id
-                    },
-                    context={
-                        'request': request
-                    }
-                    )
+                },
+                context={
+                    'request': request
+                }
+            )
             serializer.is_valid(raise_exception=True)
             favorite = Favorite.objects.get(
                 user=user,
                 recipe=recipe
-                )
+            )
             favorite.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -103,11 +103,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-                },
+            },
             context={
                 'request': request
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         cart_item = ShoppingCart.objects.create(
             user=user,
@@ -130,21 +130,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-                },
+            },
             context={
                 'request': request
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         favorite = ShoppingCart.objects.get(
-                user=user,
-                recipe=recipe
-                )
+            user=user,
+            recipe=recipe
+        )
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=['get'],
-    detail=False, permission_classes=[IsAuthenticated])
+        detail=False,
+        permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         queryset = Recipe.objects.filter(
             shopping_cart__user=request.user
@@ -172,8 +173,8 @@ def create_ingredients_dict(queryset):
             'recipe_ingredients__ingredient__measurement_unit'
         )
         .annotate(amount=Sum(
-            'recipe_ingredients__amount'
-            )
+                    'recipe_ingredients__amount'
+                )
         )
         .values(
             'recipe_ingredients__ingredient__name',
@@ -191,7 +192,7 @@ def generate_ingredients_content(ingredients_dict):
     content = ''
     for ingredient in ingredients_dict:
         content += (
-            f"{ingredient[riim]} - {ingredient[amount]} "\
+            f"{ingredient[riim]} - {ingredient[amount]} "
             f"{ingredient[riimu]}\n"
         )
     return content

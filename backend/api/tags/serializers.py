@@ -24,10 +24,10 @@ class TagSerializer(serializers.ModelSerializer):
             'name',
             'color',
             'slug'
-            ]
+        ]
         read_only_fields = [
             'id',
             'name',
             'color',
             'slug'
-            ]
+        ]

@@ -31,7 +31,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(
         source='ingredient.id',
         required=False
-        )
+    )
     name = serializers.CharField(
         source='ingredient.name',
         read_only=True
@@ -58,7 +58,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     author = UserSerializer(
         read_only=True
-        )
+    )
     ingredients = RecipeIngredientSerializer(
         many=True,
         source='recipe_ingredients'
@@ -118,13 +118,15 @@ class FavoriteSerializer(serializers.ModelSerializer):
         if request.method == 'POST':
             if Favorite.objects.filter(
                 user=user,
-                recipe=recipe).exists():
+                recipe=recipe
+            ).exists():
                 raise serializers.ValidationError(
                     {'errors': 'Рецепт уже есть в избранном'},
                 )
         if request.method == 'DELETE' and not Favorite.objects.filter(
             user=user,
-            recipe=recipe).exists():
+            recipe=recipe
+        ).exists():
             raise serializers.ValidationError(
                 'Рецепт не найден в избранном'
             )
@@ -147,13 +149,15 @@ class AddtoShoppingCartSerializator(serializers.ModelSerializer):
         if request.method == 'POST':
             if ShoppingCart.objects.filter(
                 user=user,
-                recipe=recipe).exists():
+                recipe=recipe
+            ).exists():
                 raise serializers.ValidationError(
                     {'errors': 'Рецепт уже есть в корзине'},
                 )
         if request.method == 'DELETE' and not ShoppingCart.objects.filter(
             user=user,
-            recipe=recipe).exists():
+            recipe=recipe
+        ).exists():
             raise serializers.ValidationError(
                 'Рецепт не найден в корзине'
             )
@@ -185,7 +189,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                 ingredient_id=ingredient.get('id'),
                 amount=ingredient.get('amount')
             )
-
+    # flake8: noqa: F841
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')

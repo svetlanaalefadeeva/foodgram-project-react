@@ -1,10 +1,14 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'g=bpd(mh31#bxmt@qa3ib45$o+-=**3v2yv26gn@d74nl&875r'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -23,6 +27,8 @@ INSTALLED_APPS = [
     'users',
     'cookbook',
     'api',
+    'ingredients',
+    'tags',
 ]
 
 MIDDLEWARE = [
@@ -38,12 +44,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'foodgram.urls'
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "../docs")
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,28 +95,23 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ],
-
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 6,
+   ],
 }
 
 DJOSER = {
     'SERIALIZERS': {
-        'user': 'users.serializers.UserSerializer',
-        'user_profile': 'users.serializers.UserProfileSerializer',
+        'user': 'api.users.serializers.UserSerializer',
+        'current_user': 'api.users.serializers.UserSerializer',
+        'user_create':  'api.users.serializers.UserSerializer',
     },
 
     "PERMISSIONS": {
-        "user": ["rest_framework.permissions.IsAuthenticated"],
-        "user_list": ["rest_framework.permissions.AllowAny"],
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
     },
 
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
-    'USERNAME_RESET_SHOW_EMAIL_NOT_FOUND': True,
 }
 
 LANGUAGE_CODE = 'ru'
@@ -131,4 +130,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'

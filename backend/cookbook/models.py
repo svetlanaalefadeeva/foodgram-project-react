@@ -115,7 +115,7 @@ class RecipeIngredient(models.Model):
                 fields=[
                     'recipe',
                     'ingredient'
-                    ],
+                ],
                 name='unique_recepe_s_ingredient'
             )
         ]

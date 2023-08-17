@@ -21,8 +21,8 @@ class CustomUser(AbstractUser):
         verbose_name='Фамилия',
     )
     email = models.EmailField(
-        unique = True,
-        verbose_name = 'email'
+        unique=True,
+        verbose_name='email'
     )
 
     USERNAME_FIELD = 'email'

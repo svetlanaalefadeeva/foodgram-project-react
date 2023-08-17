@@ -121,8 +121,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED
         )
 
-    @action(detail=True, methods=['delete'],
-            permission_classes=[IsAuthenticated])
+    @action(
+        detail=True,
+        methods=['delete'],
+        permission_classes=[IsAuthenticated]
+    )
     def delete(self, request, pk=None):
         recipe = self.get_object()
         user = request.user
@@ -143,7 +146,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['get'],
+    @action(
+        methods=['get'],
         detail=False,
         permission_classes=[IsAuthenticated]
     )

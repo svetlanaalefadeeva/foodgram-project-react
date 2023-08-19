@@ -1,4 +1,3 @@
-
 from django.db.models import Sum
 from django.http import FileResponse
 from rest_framework import status, viewsets
@@ -44,52 +43,52 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        permission_classes=[IsAuthenticated],
-        methods=[
-            'post',
-            'delete'
-        ],
+        methods=['post'],
+        permission_classes=[IsAuthenticated]
     )
     def favorite(self, request, pk=None):
         recipe = self.get_object()
         user = request.user
-        if request.method == 'POST':
-            serializer = FavoriteSerializer(
-                data={
-                    'recipe': recipe.id,
-                    'user': user.id
+        serializer = FavoriteSerializer(
+            data={
+                'recipe': recipe.id,
+                'user': user.id
+            },
+            context={
+                'request': request
+            }
+        )
+        serializer.is_valid(raise_exception=True)
+        favorite, created = Favorite.objects.get_or_create(
+            user=user,
+            recipe=recipe
+        )
+        serializer = RecipeSerializer(favorite.recipe)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
+
+    @favorite.mapping.delete
+    def delete_favorite(self, request, pk=None):
+        recipe = self.get_object()
+        user = request.user
+        serializer = FavoriteSerializer(
+            data={
+                'recipe': recipe.id,
+                'user': user.id
                 },
-                context={
-                    'request': request
+            context={
+                'request': request
                 }
             )
-            serializer.is_valid(raise_exception=True)
-            favorite, created = Favorite.objects.get_or_create(
+        serializer.is_valid(raise_exception=True)
+        favorite = Favorite.objects.get(
                 user=user,
                 recipe=recipe
-            )
-            serializer = RecipeSerializer(favorite.recipe)
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
-        elif request.method == 'DELETE':
-            serializer = FavoriteSerializer(
-                data={
-                    'recipe': recipe.id,
-                    'user': user.id
-                },
-                context={
-                    'request': request
-                }
-            )
-            serializer.is_valid(raise_exception=True)
-            favorite = Favorite.objects.get(
-                user=user,
-                recipe=recipe
-            )
-            favorite.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+                )
+        favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=True,
@@ -103,11 +102,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-            },
+                },
             context={
                 'request': request
-            }
-        )
+                }
+            )
         serializer.is_valid(raise_exception=True)
         cart_item = ShoppingCart.objects.create(
             user=user,
@@ -133,17 +132,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-            },
+                },
             context={
                 'request': request
-            }
-        )
+                }
+            )
         serializer.is_valid(raise_exception=True)
-        favorite = ShoppingCart.objects.get(
-            user=user,
-            recipe=recipe
-        )
-        favorite.delete()
+        cart_item = ShoppingCart.objects.get(
+                user=user,
+                recipe=recipe
+                )
+        cart_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
@@ -155,11 +154,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         queryset = Recipe.objects.filter(
             shopping_cart__user=request.user
         )
-        ingredients_dict = create_ingredients_dict(
+        ingredients = _create_ingredients_dict(
             queryset
         )
-        content = generate_ingredients_content(
-            ingredients_dict
+        content = _generate_ingredients_content(
+            ingredients
         )
         response = FileResponse(
             content,
@@ -170,33 +169,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
         return response
 
-
-def create_ingredients_dict(queryset):
-    ingredients_dict = (
+def _create_ingredients_dict(queryset):
+    ingredients = (
         queryset.values_list(
             'recipe_ingredients__ingredient__name',
             'recipe_ingredients__ingredient__measurement_unit'
-        ).annotate(
-            amount=Sum(
-                'recipe_ingredients__amount'
-            )
-        ).values(
-            'recipe_ingredients__ingredient__name',
-            'recipe_ingredients__ingredient__measurement_unit',
-            'amount'
         )
+        .annotate(amount=Sum('recipe_ingredients__amount'))
     )
-    return ingredients_dict
+    return ingredients
 
-
-def generate_ingredients_content(ingredients_dict):
-    riim = 'recipe_ingredients__ingredient__name'
-    amount = 'amount'
-    riimu = 'recipe_ingredients__ingredient__measurement_unit'
+def _generate_ingredients_content(ingredients):
     content = ''
-    for ingredient in ingredients_dict:
+    for ingredient in ingredients:
+        ingredient, amount, measurement_unit = ingredient
         content += (
-            f"{ingredient[riim]} - {ingredient[amount]} "
-            f"{ingredient[riimu]}\n"
+            f'{ingredient} - {measurement_unit} {amount}\n'
         )
     return content

@@ -167,12 +167,17 @@ class Favorite(models.Model):
         verbose_name='Рецепт')
 
     class Meta:
-        unique_together = (
-            'user',
-            'recipe'
-        )
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    'user',
+                    'recipe'
+                ],
+                name='unique_favorites'
+            )
+        ]
 
     def __str__(self):
         return f'{self.user.username} - {self.recipe}'

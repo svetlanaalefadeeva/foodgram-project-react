@@ -2,14 +2,17 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 
+from .validators import validate_username
+
 
 class CustomUser(AbstractUser):
     username = models.CharField(
         max_length=150,
-        unique=True,
+        unique=True, 
         validators=[
+            validate_username,
             UnicodeUsernameValidator(),
-        ],
+            ],
         verbose_name='Имя пользователя',
     )
     first_name = models.CharField(
@@ -22,14 +25,14 @@ class CustomUser(AbstractUser):
     )
     email = models.EmailField(
         unique=True,
-        verbose_name='email'
+        verbose_name = 'email'
     )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
-        'username',
-        'password',
-        'first_name',
+        'username', 
+        'password', 
+        'first_name', 
         'last_name'
     ]
 
@@ -57,16 +60,16 @@ class Subscription(models.Model):
             models.UniqueConstraint(
                 fields=['user', 'author'],
                 name='unique_subscription'
-            ),
+                ),
             models.CheckConstraint(
                 check=~models.Q(
                     author=models.F('user')
-                ),
+                    ),
                 name='no_self_subscription',
                 violation_error_message=(
                     'Подписаться на самого себя нельзя.'
-                )
-            ),
+                    )
+                ),
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'

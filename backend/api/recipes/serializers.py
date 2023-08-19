@@ -103,12 +103,12 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    ricipe = serializers.SerializerMethodField()
-
     class Meta:
         model = Favorite
-        fields = '__all__'
+        fields = (
+            'user',
+            'recipe'
+        )
 
     def validate(self, data):
         request = self.context['request']
@@ -134,12 +134,12 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
 
 class AddtoShoppingCartSerializator(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    ricipe = serializers.SerializerMethodField()
-
     class Meta:
         model = ShoppingCart
-        fields = '__all__'
+        fields = (
+            'user',
+            'recipe'
+        )
 
     def validate(self, data):
         request = self.context['request']
@@ -182,32 +182,30 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'author'
         ]
 
-    def addingredients(self, ingredients, recipe):
+    def _add_ingredients(self, ingredients, recipe):
         for ingredient in ingredients:
             RecipeIngredient.objects.create(
                 recipe=recipe,
                 ingredient_id=ingredient.get('id'),
                 amount=ingredient.get('amount')
             )
-    # flake8: noqa: F841
+
     def create(self, validated_data):
-        ingredients = validated_data.pop('ingredients')
+        ingredients = validated_data.pop('ingredients')   
         tags = validated_data.pop('tags')
-        name = validated_data.get('name')
-        author = validated_data.get('author')
         recipe, created = Recipe.objects.get_or_create(
             defaults=validated_data,
             **validated_data
         )
         recipe.save()
         recipe.tags.set(tags)
-        self.addingredients(ingredients, recipe)
+        self._add_ingredients(ingredients, recipe)
         return recipe
 
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients')
         instance.ingredients.clear()
-        self.addingredients(ingredients, instance)
+        self._add_ingredients(ingredients, instance)
         instance.tags.set(validated_data.pop('tags'))
         return super().update(instance, validated_data)
 

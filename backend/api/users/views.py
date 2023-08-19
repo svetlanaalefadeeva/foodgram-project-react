@@ -50,20 +50,19 @@ class CoustomUserViewSet(UserViewSet):
             CustomUser,
             id=author_id
         )
-        if request.method == 'POST':
-            serializer = CreateSubscriptionSerializer(
-                data={
-                    'user': user.id,
-                    'author': author.id
-                },
-                context={'request': request}
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
+        serializer = CreateSubscriptionSerializer(
+            data={
+                'user': user.id,
+                'author': author.id
+            },
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED
+        )
 
     @action(
         detail=True,
@@ -76,12 +75,11 @@ class CoustomUserViewSet(UserViewSet):
             CustomUser,
             id=author_id
         )
-        if request.method == 'DELETE':
-            subscription = get_object_or_404(
-                Subscription,
-                user=user,
-                author=author)
-            subscription.delete()
-            return Response(
-                status=status.HTTP_204_NO_CONTENT
-            )
+        subscription = get_object_or_404(
+            Subscription,
+            user=user,
+            author=author)
+        subscription.delete()
+        return Response(
+            status=status.HTTP_204_NO_CONTENT
+        )

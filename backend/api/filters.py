@@ -2,7 +2,6 @@ from django_filters import rest_framework as filters
 
 from cookbook.models import Recipe
 from ingredients.models import Ingredient
-from users.models import CustomUser
 from tags.models import Tag
 
 
@@ -29,9 +28,6 @@ class RecepeFilter(filters.FilterSet):
     is_in_shopping_cart = filters.BooleanFilter(
         method='get_is_in_shopping_cart'
     )
-    author = filters.ModelChoiceFilter(    # без этого фильтра
-        queryset=CustomUser.objects.all()  # на странице автора
-    )                       # отображаются рецепты всех авторов
 
     def filter_favorited(self, queryset, filter_name, filter_value):
         if filter_value:
@@ -52,5 +48,6 @@ class RecepeFilter(filters.FilterSet):
         fields = [
             'tags',
             'is_favorited',
-            'is_in_shopping_cart'
+            'is_in_shopping_cart',
+            'author'
         ]

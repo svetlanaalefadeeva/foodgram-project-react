@@ -1,5 +1,6 @@
 from django.contrib.admin import ModelAdmin, register
 from django.contrib.auth.admin import UserAdmin
+
 from users.models import (
     CustomUser,
     Subscription
@@ -14,36 +15,52 @@ class CustomUserAdmin(UserAdmin):
         'first_name',
         'last_name',
         'is_active',
-        'password'
     )
     list_filter = (
         'is_staff',
         'is_superuser',
         'is_active'
     )
-    search_fields = (
-        'username',
-        'email'
+    fieldsets = (
+        (None, {
+            'fields':(
+                'username',
+                'password'
+            )
+        }),
+        ('Personal Info', {'fields': (
+            'first_name',
+            'last_name',
+            'email'
+        )}),
+        ('Permissions', {'fields': (
+            'is_staff',
+            'is_superuser',
+            'is_active'
+        )}),
+        ('Important dates', {'fields': (
+            'last_login',
+            'date_joined'
+        )}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': (
+                'wide',
+            ),
+            'fields': (
+                'username',
+                'password1',
+                'password2',
+                'first_name',
+                'last_name',
+                'email'
+            ),
+        }),
     )
     ordering = (
         'username',
     )
-    filter_horizontal = ()
-    list_display = (
-        'id',
-        'email',
-        'username'
-    )
-    list_filter = (
-        'email',
-        'username'
-    )
-    search_fields = (
-        'username',
-        'email'
-    )
-    ordering = ('username',)
-    empty_value_display = '-пусто-'
 
 
 @register(Subscription)

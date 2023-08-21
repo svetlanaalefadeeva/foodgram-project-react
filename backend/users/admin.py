@@ -17,9 +17,9 @@ class CustomUserAdmin(UserAdmin):
         'is_active',
     )
     list_filter = (
-        'is_staff',
-        'is_superuser',
-        'is_active'
+        'username',
+        'email',
+        'is_active',
     )
     fieldsets = (
         (None, {

@@ -167,6 +167,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
         return response
 
+
 def _create_ingredients_dict(queryset):
     ingredients = (
         queryset.values_list(
@@ -176,6 +177,7 @@ def _create_ingredients_dict(queryset):
         .annotate(amount=Sum('recipe_ingredients__amount'))
     )
     return ingredients
+
 
 def _generate_ingredients_content(ingredients):
     content = ''

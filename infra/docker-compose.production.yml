@@ -4,7 +4,7 @@ volumes:
   pg_data:
   static:
   media:
-  
+
 services:
   db:
     image: postgres:13
@@ -19,7 +19,7 @@ services:
     volumes:
       - static:/backend_static
       - media:/app/media/
-      - ../data:/app/data/
+      - ./data:/app/data/
   frontend:
     env_file: .env
     image: svetlanaf/foodgram_frontend
@@ -34,7 +34,7 @@ services:
     depends_on:
       - backend
     ports:
-      - 9000:80
+      - 8080:80
     volumes:
       - static:/static
       - media:/app/media/

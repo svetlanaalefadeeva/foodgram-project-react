@@ -4,7 +4,7 @@ volumes:
   pg_data:
   static:
   media:
-
+  
 services:
   db:
     image: postgres:13
@@ -12,23 +12,29 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: ../backend/
+    image: svetlanaf/foodgram_backend
     env_file: .env
+    depends_on:
+      - db
     volumes:
       - static:/backend_static
       - media:/app/media/
       - ../data:/app/data/
   frontend:
     env_file: .env
-    build: ../frontend/
+    image: svetlanaf/foodgram_frontend
     command: cp -r /app/build/. /static/
+    depends_on:
+      - backend
     volumes:
       - static:/static
   gateway:
-    build: ../nginx/
+    image: svetlanaf/foodgram_gateway
     env_file: .env
+    depends_on:
+      - backend
     ports:
-      - 8080:80
+      - 9000:80
     volumes:
       - static:/static
       - media:/app/media/

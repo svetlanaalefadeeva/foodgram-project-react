@@ -77,16 +77,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-                },
-            context={
-                'request': request
-                }
-            )
+            },
+            context={'request': request}
+        )
         serializer.is_valid(raise_exception=True)
         favorite = Favorite.objects.get(
-                user=user,
-                recipe=recipe
-                )
+            user=user,
+            recipe=recipe
+        )
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -102,11 +100,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-                },
+            },
             context={
                 'request': request
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         cart_item = ShoppingCart.objects.create(
             user=user,
@@ -132,16 +130,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
             data={
                 'recipe': recipe.id,
                 'user': user.id
-                },
+            },
             context={
                 'request': request
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         cart_item = ShoppingCart.objects.get(
-                user=user,
-                recipe=recipe
-                )
+            user=user,
+            recipe=recipe
+        )
         cart_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

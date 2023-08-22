@@ -23,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
     )
     fieldsets = (
         (None, {
-            'fields':(
+            'fields': (
                 'username',
                 'password'
             )

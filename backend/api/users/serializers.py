@@ -129,7 +129,7 @@ class CreateSubscriptionSerializer(serializers.ModelSerializer):
                 'Вы не можете подписаться на самого себя'
             )
         return attrs
-    
+
     def to_representation(self, instance):
         return UserSubscribeSerializer(
             instance.author,

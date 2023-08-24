@@ -43,11 +43,11 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return (
             request and request.user.is_authenticated
-                and Subscription.objects.filter(
-                    user=request.user,
-                    author=obj
-                ).exists()
-            )
+            and Subscription.objects.filter(
+                user=request.user,
+                author=obj
+            ).exists()
+        )
 
 
 class SubscriptionRecipeSerializer(serializers.ModelSerializer):

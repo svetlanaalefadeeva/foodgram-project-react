@@ -9,7 +9,6 @@ from api.ingredients.serializers import (
 )
 from api.tags.serializers import TagSerializer
 from api.users.serializers import UserSerializer
-from ingredients.models import Ingredient
 from cookbook.models import (
     Favorite,
     Recipe,

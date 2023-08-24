@@ -1,5 +1,3 @@
 name: https://foodgramfox.hopto.org/;
 login: admin@admin.com;
 password: 1234;
-
-кодировку проверила, стоит UTF-8, как это побороть я не знаю.

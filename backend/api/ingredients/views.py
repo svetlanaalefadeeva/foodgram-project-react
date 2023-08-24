@@ -2,8 +2,6 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from ingredients.models import Ingredient
-
-
 from api.filters import IngredientFilter
 from api.ingredients.serializers import IngredientSerializer
 

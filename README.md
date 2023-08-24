@@ -1,5 +1,3 @@
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-
 ## Foodgram  🍝
 
 Foodgram - это веб-приложение, которое позволяет пользователям делиться рецептами своих любимых блюд. 
@@ -15,7 +13,7 @@ Foodgram - это веб-приложение, которое позволяет
 ## Технологии
 
 - Python 3.9
-- Django 3.2.3
+- Django 4.2.3
 - Django REST framework 3.12.4
 - JavaScript
 
@@ -40,7 +38,8 @@ sudo docker compose -f docker-compose.production.yml up
 
 Клонируем себе репозиторий: 
 
-```bash 
+```bash
+cd infra
 git@github.com:svetlanaalefadeeva/foodgram-project-react.git
 ```
 
@@ -50,7 +49,7 @@ git@github.com:svetlanaalefadeeva/foodgram-project-react.git
 sudo docker compose -f docker-compose.yml up
 ```
 
-### После запуска: Миграции, сбор статистики
+### После запуска: миграции, сбор статистики, загрузка ингредиентов
 
 После запуска необходимо выполнить сбор статистики и миграции бэкенда. Статистика фронтенда собирается во время запуска контейнера, после чего он останавливается. 
 
@@ -63,13 +62,21 @@ sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/sta
 
 sudo docker compose -f docker-compose.production.yml exec backend python manage.py created_db
 ```
-
+Создайте суперпользователя
+```bash
+sudo docker compose -f [имя-файла-docker-compose.yml] exec backend python manage.py createsuperuser
+```
 И далее проект доступен на: 
 
 ```
 http://localhost:8080/
 ```
-
+Зайдите в админку
+```bash
+http://localhost:8080/admin
+создайте теги для рецептов
+```
+И можете пользоваться сайтом. 
 ### Остановка оркестра контейнеров
 
 В окне, где был запуск **Ctrl+С** или в другом окне:
@@ -82,3 +89,5 @@ sudo docker compose -f docker-compose.yml down
 
 - Backend: [Светлана Фадеева](https://github.com/svetlanaalefadeeva)
 - Frontend: Yandex Praktikum team
+
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)

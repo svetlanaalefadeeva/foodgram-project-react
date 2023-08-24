@@ -9,6 +9,7 @@ from api.ingredients.serializers import (
 )
 from api.tags.serializers import TagSerializer
 from api.users.serializers import UserSerializer
+from ingredients.models import Ingredient
 from cookbook.models import (
     Favorite,
     Recipe,
@@ -183,21 +184,44 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         ]
 
     def _add_ingredients(self, ingredients, recipe):
+        added_ingredients = set()
         for ingredient in ingredients:
-            RecipeIngredient.objects.create(
-                recipe=recipe,
-                ingredient_id=ingredient.get('id'),
-                amount=ingredient.get('amount')
+            if ingredient.get(
+                'amount'
+            ) > 0 and ingredient.get(
+                'id'
+            ) not in added_ingredients:
+                RecipeIngredient.objects.create(
+                    recipe=recipe,
+                    ingredient_id=ingredient.get('id'),
+                    amount=ingredient.get('amount')
+                )
+                added_ingredients.add(ingredient.get('id'))
+
+    def validate(self, data):
+        ingredients = data.get('ingredients')
+        if not ingredients:
+            raise serializers.ValidationError(
+                'Требуется хотя бы один ингредиент.'
             )
+        ingredient_ids = [
+            ingredient['id'] for ingredient in ingredients
+        ]
+        if len(set(ingredient_ids)) != len(ingredient_ids):
+            raise serializers.ValidationError(
+                'Дублирование ингредиентов не допускается.'
+            )
+        for ingredient in ingredients:
+            if ingredient.get('amount') <= 0:
+                raise serializers.ValidationError(
+                    'Количество ингредиентов должно быть больше нуля.'
+                )
+        return data
 
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
-        recipe, created = Recipe.objects.get_or_create(
-            defaults=validated_data,
-            **validated_data
-        )
-        recipe.save()
+        recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
         self._add_ingredients(ingredients, recipe)
         return recipe

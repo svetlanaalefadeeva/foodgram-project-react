@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def validate_username(self, value):
-        if value == 'me':
+        if value.lower() == 'me':
             raise ValidationError(
                 'Нельзя создать пользователя с именем "me"!'
             )
@@ -41,15 +41,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        return bool(
-            request and request.user.is_authenticated and (
-                Subscription.objects.filter(
-                    user=self.context.get(
-                        'request'
-                    ).user,
-                    author=obj
-                ).exists()
-            )
+        return (
+            request and request.user.is_authenticated and
+            Subscription.objects.filter(
+                user=request.user,
+                author=obj
+            ).exists()
         )
 
 

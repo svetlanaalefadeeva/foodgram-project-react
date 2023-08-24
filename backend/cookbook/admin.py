@@ -31,6 +31,7 @@ class RecipeAdmin(admin.ModelAdmin):
         ('author', 'tags',),
         ('text',), ('image',)
     )
+    filter_horizontal = ('tags',)
     search_fields = (
         'name',
         'author',
@@ -45,7 +46,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def get_favorite(self, obj):
         get_favorite = Favorite.objects.filter(
-            recipe=obj).count()
+            recipe=obj
+        ).count()
         return get_favorite
 
     get_favorite.short_description = 'В избранном'
@@ -73,4 +75,5 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'user__username',
         'recipe__name'
     )
+    exclude = ('amount',)
     empty_value_display = '-пусто-'

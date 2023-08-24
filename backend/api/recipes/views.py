@@ -169,18 +169,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
 def _create_ingredients_dict(queryset):
-    ingredients = (
-        queryset.values_list(
-            'recipe_ingredients__ingredient__name',
-            'recipe_ingredients__ingredient__measurement_unit'
-        )
-        .annotate(amount=Sum('recipe_ingredients__amount'))
-    )
-    return ingredients
+    return queryset.values_list(
+        'recipe_ingredients__ingredient__name',
+        'recipe_ingredients__ingredient__measurement_unit'
+    ).annotate(amount=Sum('recipe_ingredients__amount'))
 
 
 def _generate_ingredients_content(ingredients):
-    content = ''
+    content = 'Список покупок:\n'
     for ingredient in ingredients:
         ingredient, amount, measurement_unit = ingredient
         content += (

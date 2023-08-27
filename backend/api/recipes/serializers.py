@@ -182,20 +182,13 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'author'
         ]
 
-    def _add_ingredients(self, ingredients, recipe):
-        added_ingredients = set()
-        for ingredient in ingredients:
-            if ingredient.get(
-                'amount'
-            ) > 0 and ingredient.get(
-                'id'
-            ) not in added_ingredients:
-                RecipeIngredient.objects.create(
-                    recipe=recipe,
-                    ingredient_id=ingredient.get('id'),
-                    amount=ingredient.get('amount')
-                )
-                added_ingredients.add(ingredient.get('id'))
+    def _add_ingredients(self, ingredients, recipe): 
+        for ingredient in ingredients: 
+            RecipeIngredient.objects.create( 
+                recipe=recipe, 
+                ingredient_id=ingredient.get('id'), 
+                amount=ingredient.get('amount') 
+            )
 
     def validate(self, data):
         ingredients = data.get('ingredients')

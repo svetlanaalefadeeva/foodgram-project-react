@@ -1,4 +1,6 @@
-# Foodgram
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
+# Foodgram 🍝
 
 Foodgram - это веб-приложение, которое позволяет пользователям делиться рецептами своих любимых блюд. 
 Оно предоставляет удобный интерфейс для загрузки, просмотра и добавления в избранное, подписку на авторов и создание списка покупок.
@@ -15,7 +17,8 @@ Foodgram - это веб-приложение, которое позволяет
 - Python 3.9
 - Django 4.2.3
 - Django REST framework 3.12.4
-- JavaScript
+- React
+- Docker
 
 ## Запуск проекта из образов с Docker hub
 
@@ -85,7 +88,7 @@ http://localhost:8080/admin
 sudo docker compose -f docker-compose.yml down
 ```
 
-### Автор проекта Foodgram
+### Авторы проекта Foodgram 🍝
 
 - Backend: [Светлана Фадеева](https://github.com/svetlanaalefadeeva)
 - Frontend: Yandex Praktikum team
